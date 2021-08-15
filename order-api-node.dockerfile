@@ -1,13 +1,13 @@
 FROM centos:7
 ENV LD_LIBRARY_PATH /instantclient_21_1
+ENV ORA_IC_URL https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basic-linux.x64-21.1.0.0.0.zip
 
 RUN yum -y update
-RUN yum -y install libaio unzip rlwrap
-
-ADD instantclient-basic-linux.x64-21.1.0.0.0.zip /
+RUN yum -y install libaio unzip rlwrap wget
 
 RUN unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
-    useradd -m -u 10001 docker && usermod docker -aG wheel
+    useradd -m -u 10001 docker && usermod docker -aG wheel && \
+    wget $ORA_IC_URL /
 USER root
 RUN mkdir -p /var/opt/node/apps/$REPO/ && chown -R docker:wheel /var/opt/node/
 USER 10001
@@ -21,15 +21,10 @@ ARG REPO_ARG
 ENV REPO $REPO_ARG
 ENV PATH=root/.nvm/versions/node/v14.16.0/bin/:$PATH
 
-COPY --chown=docker:wheel ./"$REPO"/ /var/opt/node/apps/"$REPO"/
+COPY --chown=docker:wheel ./package.json /var/opt/node/apps/"$REPO"/
 WORKDIR /var/opt/node/apps/"$REPO"
-ARG env_filename
-ENV environment $env_filename
 
-RUN rm -f /var/opt/node/apps/"$REPO"/.env && \
-    cp .env.change.me $environment && \
-    cd /var/opt/node/apps/"$REPO" && \
-    npm install && \
-    npm run build
+RUN cd /var/opt/node/apps/"$REPO" && \
+    npm install
 
 CMD node dist/index.js
