@@ -5,9 +5,10 @@ ENV ORA_IC_URL https://download.oracle.com/otn_software/linux/instantclient/2110
 RUN yum -y update
 RUN yum -y install libaio unzip rlwrap wget
 
-RUN unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
-    useradd -m -u 10001 docker && usermod docker -aG wheel && \
-    wget $ORA_IC_URL /
+RUN wget $ORA_IC_URL / && \
+    unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
+    useradd -m -u 10001 docker && usermod docker -aG wheel
+    
 USER root
 RUN mkdir -p /var/opt/node/apps/$REPO/ && chown -R docker:wheel /var/opt/node/
 USER 10001
