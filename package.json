@@ -1,0 +1,51 @@
+{
+  "name": "order-api-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "./node_modules/.bin/mocha  --reporter spec  dist/test",
+    "test_g": "mocha --watch --reporter spec  dist/test",
+    "test_win": ".\\node_modules\\.bin\\mocha --reporter spec dist\\test",
+    "dev": "tsc-watch --onSuccess \"node --trace-warnings --unhandled-rejections=throw dist/index.js\"",
+    "doc": "typedoc --out docs src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonpath": "^1.1.1",
+    "morgan": "^1.10.0",
+    "node-oracledb": "^1.0.2",
+    "npmx": "0.0.0",
+    "oracledb": "^5.1.0",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.19",
+    "typedoc": "^0.21.5",
+    "typeorm": "^0.2.32"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.16",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/faker": "^5.5.1",
+    "@types/jsonpath": "^0.2.0",
+    "@types/mocha": "^8.2.2",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.37",
+    "chai": "^4.3.4",
+    "faker": "^5.5.3",
+    "mocha": "^8.3.2",
+    "ts-node": "^9.1.1",
+    "tsc-watch": "^4.2.9",
+    "typescript": "^4.2.3"
+  }
+}
