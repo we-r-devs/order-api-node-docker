@@ -18,8 +18,7 @@ SHELL ["/bin/bash", "--login", "-c"]
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 RUN nvm install 14.16.0 &&  \
     npm install -g npm@latest
-ARG REPO_ARG
-ENV REPO $REPO_ARG
+ENV REPO order-api-node
 ENV PATH=root/.nvm/versions/node/v14.16.0/bin/:$PATH
 
 COPY --chown=docker:wheel ./package.json /var/opt/node/apps/"$REPO"/
