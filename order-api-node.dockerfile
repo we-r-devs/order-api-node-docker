@@ -22,10 +22,11 @@ ENV REPO order-api-node
 ENV PATH=root/.nvm/versions/node/v14.16.0/bin/:$PATH
 
 #COPY --chown=docker:wheel ./package.json /var/opt/node/apps/"$REPO"/
-COPY ./package.json /var/opt/node/apps/"$REPO"/
+#COPY ./package.json /var/opt/node/apps/"$REPO"/
 WORKDIR /var/opt/node/apps/"$REPO"
 
-RUN cd /var/opt/node/apps/"$REPO" && \
-    npm install
+RUN cd /var/opt/node/apps/"$REPO" 
+#    && \
+#    npm install
 
 CMD node dist/index.js
