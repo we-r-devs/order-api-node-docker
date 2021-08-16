@@ -7,7 +7,7 @@ ENV S2I_URL https://github.com/openshift/source-to-image/releases/download/v1.0.
 
 
 RUN yum -y update
-RUN yum -y install libaio unzip rlwrap wget
+RUN yum -y install libaio unzip rlwrap wget tar
 
 RUN wget $ORA_IC_URL && \
     wget $S2I_URL && \
