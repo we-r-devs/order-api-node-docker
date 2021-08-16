@@ -1,18 +1,12 @@
 FROM centos:7
-LABEL io.openshift.s2i.scripts-url=image:///tmp/scripts/
-
 ENV LD_LIBRARY_PATH /instantclient_21_1
 ENV ORA_IC_URL https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basic-linux.x64-21.1.0.0.0.zip
-ENV S2I_URL https://github.com/openshift/source-to-image/releases/download/v1.0.9/source-to-image-v1.0.9-f9ff77d-linux-amd64.tar.gz
-
 
 RUN yum -y update
 RUN yum -y install libaio unzip rlwrap wget
 
 RUN wget $ORA_IC_URL && \
-    wget S2I_URL && \
     unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
-    tar -xzf source-to-image-v1.0.9-f9ff77d-linux-amd64.tar.gz && \
     useradd -m -u 10001 docker && usermod docker -aG wheel
     
 USER root
