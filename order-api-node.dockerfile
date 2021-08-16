@@ -10,7 +10,7 @@ RUN yum -y update
 RUN yum -y install libaio unzip rlwrap wget
 
 RUN wget $ORA_IC_URL && \
-    wget S2I_URL && \
+    wget $S2I_URL && \
     unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
     mkdir -p /tmp/scripts && \
     tar -xzf source-to-image-v1.0.9-f9ff77d-linux-amd64.tar.gz -C /tmp/scripts/ && \
