@@ -67,14 +67,13 @@ RUN yum install -y centos-release-scl-rh && \
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-RUN ls $STI_SCRIPTS_PATH
-
 # Copy extra files to the image, including help file.
 COPY ./root/ /
 
 # Drop the root user and make the content of /opt/app-root owned by user 1001
 RUN chown -R 1001:0 ${APP_ROOT} && chmod -R ug+rwx ${APP_ROOT} && \
-    rpm-file-permissions
+    rpm-file-permissions && \
+    chown -R 1001:0 $STI_SCRIPTS_PATH
 
 USER 1001
 
