@@ -17,11 +17,10 @@ EXPOSE 8080
 ENV NODEJS_VERSION=10 \
     NPM_RUN=start \
     NAME=nodejs \
-    NPM_CONFIG_PREFIX=$HOME/.npm-global 
-ENV LD_LIBRARY_PATH /instantclient_21_1
-ENV ORA_IC_URL https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basic-linux.x64-21.1.0.0.0.zip
-ENV S2I_URL https://github.com/openshift/source-to-image/releases/download/v1.0.9/source-to-image-v1.0.9-f9ff77d-linux-amd64.tar.gz
-
+    NPM_CONFIG_PREFIX=$HOME/.npm-global  \
+    LD_LIBRARY_PATH=/instantclient_21_1  \
+    ORA_IC_URL=https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basic-linux.x64-21.1.0.0.0.zip \
+    STI_SCRIPTS_PATH=/usr/libexec/s2i/
 
 # Set SCL related variables in Dockerfile so that the collection is enabled by default
 # Add $HOME/node_modules/.bin to the $PATH, allowing user to make npm scripts
@@ -56,12 +55,9 @@ LABEL summary="$SUMMARY" \
       help="For more information visit https://github.com/sclorg/s2i-nodejs-container" \
       usage="s2i build <SOURCE-REPOSITORY> quay.io/centos7/$NAME-$NODEJS_VERSION-centos7:latest <APP-NAME>"
 
-ENV STI_SCRIPTS_PATH  /usr/libexec/s2i/
-
 RUN yum install -y wget && \
     wget $ORA_IC_URL && \
-    unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
-    useradd -m -u 10001 docker && usermod docker -aG wheel
+    unzip instantclient-basic-linux.x64-21.1.0.0.0.zip
 
 RUN yum install -y centos-release-scl-rh && \
     ( [ "rh-${NAME}${NODEJS_VERSION}" != "${NODEJS_SCL}" ] && yum remove -y ${NODEJS_SCL}\* || : ) && \
