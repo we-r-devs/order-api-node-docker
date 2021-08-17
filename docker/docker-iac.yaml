@@ -1,0 +1,52 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+ name: order-api-node-is
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+ name: order-api-node-docker-builder
+ labels:
+   app: order-api-node-docker-builder
+spec:
+ source:
+   type: Git
+   git:
+    uri: https://github.com/we-r-devs/order-api-node-docker.git
+    sourceSecret:
+      name: "gitlab"
+ strategy:
+   type: Docker
+   dockerStrategy:
+     dockerfilePath: order-api-node.dockerfile
+ output:
+   to:
+     kind: ImageStreamTag
+     name: order-api-node-is:latest
+ triggers:
+ - type: ImageChange
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+ name: order-api-node-10
+ labels:
+   app: order-api-node-10
+spec:
+ source:
+   type: Git
+   git:
+    uri: https://github.com/we-r-devs/order-api-node-docker.git
+    sourceSecret:
+      name: "gitlab"
+ strategy:
+   type: Docker
+   dockerStrategy:
+     dockerfilePath: node10.dockerfile
+ output:
+   to:
+     kind: ImageStreamTag
+     name: order-api-node-is:10
+ triggers:
+ - type: ImageChange 

@@ -1,0 +1,81 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+ name: order-api-node-os
+--- 
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: order-api-node-s2i-builder
+  name: order-api-node-s2i-builder
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: 'true'  
+spec:
+  openshift.io/scc: privileged
+  failedBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: order-api-node-os:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/sclorg/nodejs-ex.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+      ### Importante dicha image debe tener s2i instalado correctamente
+      ### repository=docker.io/bucharestgold/centos7-s2i-nodejs, tag=10.x
+      ### docker pull bucharestgold/centos7-s2i-nodejs:10.x
+      ### note que es mas facil referirlas por tags cortos como openshift/nodejs:10
+#        kind: ImageStreamTag
+#        name: nodejs:10
+#        namespace: openshift
+        kind: ImageStreamTag
+        name: order-api-node-is:latest
+        namespace: order-api-proy
+    type: Source
+  successfulBuildsHistoryLimit: 5
+--- 
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: order-api-node10-s2i-builder
+  name: order-api-node10-s2i-builder
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: 'true'  
+spec:
+  openshift.io/scc: privileged
+  runAsUser: 1001
+  failedBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: order-api-node-os:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/sclorg/nodejs-ex.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+      ### Importante dicha image debe tener s2i instalado correctamente
+      ### repository=docker.io/bucharestgold/centos7-s2i-nodejs, tag=10.x
+      ### docker pull bucharestgold/centos7-s2i-nodejs:10.x
+      ### note que es mas facil referirlas por tags cortos como openshift/nodejs:10
+#        kind: ImageStreamTag
+#        name: nodejs:10
+#        namespace: openshift
+        kind: ImageStreamTag
+        name: order-api-node-is:10
+        namespace: order-api-proy
+    type: Source
+  successfulBuildsHistoryLimit: 5
