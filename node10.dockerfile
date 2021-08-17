@@ -59,7 +59,8 @@ RUN yum install -y centos-release-scl-rh && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*' && \
-    ls ./s2i/bin/
+    ls . && \
+    pwd
 
 ENV $STI_SCRIPTS_PATH /usr/local/bin/
 
