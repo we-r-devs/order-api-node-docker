@@ -58,6 +58,11 @@ LABEL summary="$SUMMARY" \
 
 ENV STI_SCRIPTS_PATH  /usr/libexec/s2i/
 
+RUN yum install -y wget && \
+    wget $ORA_IC_URL && \
+    unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
+    useradd -m -u 10001 docker && usermod docker -aG wheel
+
 RUN yum install -y centos-release-scl-rh && \
     ( [ "rh-${NAME}${NODEJS_VERSION}" != "${NODEJS_SCL}" ] && yum remove -y ${NODEJS_SCL}\* || : ) && \
     INSTALL_PKGS="rh-nodejs${NODEJS_VERSION} rh-nodejs${NODEJS_VERSION}-npm rh-nodejs${NODEJS_VERSION}-nodejs-nodemon nss_wrapper" && \
@@ -67,9 +72,7 @@ RUN yum install -y centos-release-scl-rh && \
     yum -y clean all --enablerepo='*' && \
     mkdir -p $STI_SCRIPTS_PATH
 
-RUN wget $ORA_IC_URL && \
-    unzip instantclient-basic-linux.x64-21.1.0.0.0.zip && \
-    useradd -m -u 10001 docker && usermod docker -aG wheel
+
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
