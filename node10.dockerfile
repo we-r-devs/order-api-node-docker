@@ -52,7 +52,6 @@ LABEL summary="$SUMMARY" \
       help="For more information visit https://github.com/sclorg/s2i-nodejs-container" \
       usage="s2i build <SOURCE-REPOSITORY> quay.io/centos7/$NAME-$NODEJS_VERSION-centos7:latest <APP-NAME>"
 
-## NEW LINE: Definimos el path donde se copiaran los scripts: assemble, run, save-artifacts y usage
 ENV STI_SCRIPTS_PATH  /usr/libexec/s2i/
 
 RUN yum install -y centos-release-scl-rh && \
@@ -62,10 +61,8 @@ RUN yum install -y centos-release-scl-rh && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*' && \
-    mkdir -p $STI_SCRIPTS_PATH  ## NEW LINE: es necesario crear el directorio donde se copiaran los scripts
+    mkdir -p $STI_SCRIPTS_PATH
 
-
-## EDIT LINE: Redirigimos los scripts al path indicado por la env var
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
@@ -75,7 +72,7 @@ COPY ./root/ /
 # Drop the root user and make the content of /opt/app-root owned by user 1001
 RUN chown -R 1001:0 ${APP_ROOT} && chmod -R ug+rwx ${APP_ROOT} && \
     rpm-file-permissions && \
-    chown -R 1001:0 $STI_SCRIPTS_PATH && chmod -R ug+rwx $STI_SCRIPTS_PATH ## NEW LINE: Cambiamos los privilegios para que el usuario 1001 sea el dueno y pueda ejecutar los scripts
+    chown -R 1001:0 $STI_SCRIPTS_PATH && chmod -R ug+rwx $STI_SCRIPTS_PATH
 
 USER 1001
 
