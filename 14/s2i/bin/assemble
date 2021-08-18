@@ -36,6 +36,8 @@ echo "---> Installing application source ..."
 mv /tmp/src/* ./
 
 # Fix source directory permissions
+echo "-------------------- fix permissions"
+cat fix-permissions
 fix-permissions ./
 
 if [ ! -z $HTTP_PROXY ]; then
