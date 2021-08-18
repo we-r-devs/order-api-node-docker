@@ -68,6 +68,9 @@ RUN yum install -y centos-release-scl-rh && \
     yum -y clean all --enablerepo='*' && \
     mkdir -p $STI_SCRIPTS_PATH
 
+
+RUN cat fix-permissions
+
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
